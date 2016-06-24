@@ -1,18 +1,26 @@
-package com.codepath.simpletodo;
+package com.codepath.simpletodo.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.codepath.simpletodo.R;
+import com.codepath.simpletodo.adapters.TodoCursorAdapter;
+import com.codepath.simpletodo.fragments.EditItemDialogFragment;
+import com.codepath.simpletodo.models.Item;
+import com.codepath.simpletodo.utils.ItemsDatabaseHelper;
+
+import java.sql.Date;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements EditItemDialogFragment.EditItemDialogListener{
     ArrayList<String> items;
     ArrayAdapter<String> itemsAdapter;
     TodoCursorAdapter todoAdapter;
@@ -78,20 +86,21 @@ public class MainActivity extends AppCompatActivity {
         // Setup cursor adapter using cursor
         todoAdapter.changeCursor(todoCursor);
     }
+
+    private void showEditDialog(Item editItem) {
+        FragmentManager fm = getSupportFragmentManager();
+        EditItemDialogFragment editNameDialogFragment = EditItemDialogFragment.newInstance(editItem);
+        editNameDialogFragment.show(fm, "activity_edit_item");
+    }
+
     private void setupListViewListener() {
         lvItems.setOnItemClickListener(
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Intent it = new Intent(MainActivity.this, EditItemActivity.class);
                         long id = todoAdapter.getItemId(i);
                         Cursor cursor = (Cursor)lvItems.getItemAtPosition(i);
-                        it.putExtra("editItemId", id);
-                        it.putExtra("editItemDueDate", cursor.getLong(2));
-                        it.putExtra("editItemText", cursor.getString(3));
-                        editPos = i;
-                        // startActivity(it);
-                        startActivityForResult(it, REQUEST_CODE);
+                        showEditDialog(new Item((int)id, cursor.getString(3), new Date(cursor.getLong(2))));
                     }
                 }
         );
@@ -107,5 +116,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+    @Override
+    public void onFinishEditDialog(Item editItem) {
+        mItemsDBHelper.updateItem(editItem);
+        setDataChanged();
     }
 }

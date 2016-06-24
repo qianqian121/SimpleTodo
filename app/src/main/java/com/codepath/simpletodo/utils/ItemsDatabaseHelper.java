@@ -1,10 +1,12 @@
-package com.codepath.simpletodo;
+package com.codepath.simpletodo.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.codepath.simpletodo.models.Item;
 
 /**
  * Created by qiming on 6/21/2016.

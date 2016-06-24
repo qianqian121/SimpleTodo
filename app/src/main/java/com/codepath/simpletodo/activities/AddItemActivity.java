@@ -1,4 +1,4 @@
-package com.codepath.simpletodo;
+package com.codepath.simpletodo.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+
+import com.codepath.simpletodo.models.Item;
+import com.codepath.simpletodo.utils.ItemsDatabaseHelper;
+import com.codepath.simpletodo.R;
 
 import java.util.Calendar;
 
