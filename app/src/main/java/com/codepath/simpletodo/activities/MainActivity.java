@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
     private void setupListViewListener() {
         todoAdapter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                long id = rvItems.getChildItemId(view);
                 int position = rvItems.getChildAdapterPosition(view);
                 Cursor cursor = todoAdapter.getCursor(position);
                 showEditDialog(new Item(cursor.getInt(0), cursor.getString(3), new Date(cursor.getLong(2))));
@@ -108,35 +107,12 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
         todoAdapter.setOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View view) {
                 int position = rvItems.getChildAdapterPosition(view);
-//                long _id = rvItems.getChildItemId(view);
                 long _id = todoAdapter.getItemId(position);
                 mItemsDBHelper.deleteItem(_id);
                 setDataChanged();
                 return true;
             }
         });
-//        rvItems.setOnItemClickListener(
-//                new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                        long id = todoAdapter.getItemId(i);
-//                        Cursor cursor = (Cursor)rvItems.get(i);
-//                        showEditDialog(new Item((int)id, cursor.getString(3), new Date(cursor.getLong(2))));
-//                    }
-//                }
-//        );
-//        rvItems.setOnItemLongClickListener(
-//                new AdapterView.OnItemLongClickListener() {
-//                    @Override
-//                    public boolean onItemLongClick(AdapterView<?> adapter,
-//                                                   View item, int pos, long id) {
-//                        long _id = todoAdapter.getItemId(pos);
-//                        mItemsDBHelper.deleteItem(_id);
-//                        setDataChanged();
-//                        return true;
-//                    }
-//                }
-//        );
     }
 
     @Override
