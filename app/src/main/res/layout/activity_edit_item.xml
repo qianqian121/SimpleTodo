@@ -57,6 +57,25 @@
         android:id="@+id/tvDueDate"
         android:layout_alignTop="@+id/datePicker2"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="73dp" />
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Priority"
+        android:id="@+id/tvPriority"
+        android:layout_below="@+id/datePicker2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingBar2"
+        android:layout_below="@+id/tvPriority"
+        android:layout_alignRight="@+id/datePicker2"
+        android:layout_alignEnd="@+id/datePicker2"
+        android:stepSize="1.0"
+        android:numStars="3" />
 </RelativeLayout>

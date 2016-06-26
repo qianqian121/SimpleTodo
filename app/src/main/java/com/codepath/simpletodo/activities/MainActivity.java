@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
             public void onClick(View view) {
                 int position = rvItems.getChildAdapterPosition(view);
                 Cursor cursor = todoAdapter.getCursor(position);
-                showEditDialog(new Item(cursor.getInt(0), cursor.getString(3), new Date(cursor.getLong(2))));
+                showEditDialog(new Item(cursor.getInt(0), cursor.getString(3), new Date(cursor.getLong(2)), cursor.getInt(1)));
             }
         });
 

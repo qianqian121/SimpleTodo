@@ -11,10 +11,12 @@ public class Item implements Serializable {
     public Date dueDate;
     public int priority;
     public String text;
+    public static final String[] PRIORITY_LEVELS = {"Low", "Low", "Normal", "High"};
 
-    public Item(int id, String text, Date dueDate) {
+    public Item(int id, String text, Date dueDate, int priority) {
         this.id = id;
         this.text = text;
         this.dueDate = dueDate;
+        this.priority = priority;
     }
 }

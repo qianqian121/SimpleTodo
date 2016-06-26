@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RatingBar;
 
 import com.codepath.simpletodo.models.Item;
 import com.codepath.simpletodo.utils.ItemsDatabaseHelper;
@@ -29,8 +30,10 @@ public class AddItemActivity extends AppCompatActivity {
                 dueDatePicker.getMonth(),
                 dueDatePicker.getDayOfMonth());
 
+        RatingBar ratingBar = (RatingBar)findViewById(R.id.ratingBar);
+
         ItemsDatabaseHelper helper = ItemsDatabaseHelper.getsInstance(this);
-        helper.addItem(new Item((int)id, editedItem, calendar.getTime()));
+        helper.addItem(new Item((int)id, editedItem, calendar.getTime(), (int)ratingBar.getRating()));
         Intent data = new Intent();
 
         setResult(RESULT_OK, data);

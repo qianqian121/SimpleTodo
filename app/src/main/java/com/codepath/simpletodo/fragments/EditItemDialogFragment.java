@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RatingBar;
 
 import com.codepath.simpletodo.R;
 import com.codepath.simpletodo.models.Item;
@@ -64,20 +65,27 @@ public class EditItemDialogFragment extends DialogFragment{
         String editItemText = mEditItem.text;
         final EditText mtItemEdit = (EditText)view.findViewById(R.id.mtItemEdit);
         mtItemEdit.setText(editItemText);
-        DatePicker dueDatePicker = (DatePicker)view.findViewById(R.id.datePicker2);
+        final DatePicker dueDatePicker = (DatePicker)view.findViewById(R.id.datePicker2);
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(dueDate);
         final int year = calendar.get(Calendar.YEAR);
         final int month = calendar.get(Calendar.MONTH);
         final int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
         dueDatePicker.updateDate(year,month,dayOfMonth);
+        final RatingBar ratingBar = (RatingBar)view.findViewById(R.id.ratingBar2);
+        ratingBar.setRating(mEditItem.priority);
 
         Button btnSave = (Button)view.findViewById(R.id.btnSaveEdited);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Calendar calendar= Calendar.getInstance();
+                calendar.set(dueDatePicker.getYear(),
+                        dueDatePicker.getMonth(),
+                        dueDatePicker.getDayOfMonth());
                 mEditItem.text = mtItemEdit.getText().toString();
                 mEditItem.dueDate = calendar.getTime();
+                mEditItem.priority = (int)ratingBar.getRating();
                 mEditItemDialogListener.onFinishEditDialog(mEditItem);
                 dismiss();
             }

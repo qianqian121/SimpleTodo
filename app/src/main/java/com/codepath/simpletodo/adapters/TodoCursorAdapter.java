@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.codepath.simpletodo.R;
+import com.codepath.simpletodo.models.Item;
 
 import java.text.SimpleDateFormat;
 
@@ -83,7 +84,7 @@ public class TodoCursorAdapter extends CursorRecyclerViewAdapter<TodoCursorAdapt
         long duedate = cursor.getLong(cursor.getColumnIndexOrThrow("duedate"));
         // Populate fields with extracted properties
         viewHolder.tvBody.setText(body);
-        viewHolder.tvPriority.setText(String.valueOf(priority));
+        viewHolder.tvPriority.setText(Item.PRIORITY_LEVELS[priority]);
         viewHolder.tvDueDate.setText(SDF.format(duedate));
     }
 }
