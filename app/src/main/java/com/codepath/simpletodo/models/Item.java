@@ -1,5 +1,7 @@
 package com.codepath.simpletodo.models;
 
+import android.graphics.Color;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,7 +13,8 @@ public class Item implements Serializable {
     public Date dueDate;
     public int priority;
     public String text;
-    public static final String[] PRIORITY_LEVELS = {"Low", "Low", "Normal", "High"};
+//    public static final String[] PRIORITY_LEVELS = {"Low", "Low", "Normal", "High"};
+    public static final int[] PRIORITY_LEVELS = {Color.GREEN, Color.GREEN, Color.YELLOW, android.graphics.Color.RED};
 
     public Item(int id, String text, Date dueDate, int priority) {
         this.id = id;

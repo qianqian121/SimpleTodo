@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.simpletodo.R;
@@ -43,13 +44,13 @@ public class TodoCursorAdapter extends CursorRecyclerViewAdapter<TodoCursorAdapt
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvBody;
-        public TextView tvPriority;
+        public ImageView ivPriority;
         public TextView tvDueDate;
 
         public ViewHolder(View view) {
             super(view);
             tvBody = (TextView) view.findViewById(R.id.tvItem);
-            tvPriority = (TextView) view.findViewById(R.id.tvPriority);
+            ivPriority = (ImageView) view.findViewById(R.id.ivPriority);
             tvDueDate = (TextView) view.findViewById(R.id.tvDueDate);
 
             view.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +85,7 @@ public class TodoCursorAdapter extends CursorRecyclerViewAdapter<TodoCursorAdapt
         long duedate = cursor.getLong(cursor.getColumnIndexOrThrow("duedate"));
         // Populate fields with extracted properties
         viewHolder.tvBody.setText(body);
-        viewHolder.tvPriority.setText(Item.PRIORITY_LEVELS[priority]);
+        viewHolder.ivPriority.setColorFilter(Item.PRIORITY_LEVELS[priority]);
         viewHolder.tvDueDate.setText(SDF.format(duedate));
     }
 }
