@@ -6,10 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.codepath.simpletodo.R;
 import com.codepath.simpletodo.adapters.TodoCursorAdapter;
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
     ArrayList<String> items;
     ArrayAdapter<String> itemsAdapter;
     TodoCursorAdapter todoAdapter;
-    ListView lvItems;
+    RecyclerView rvItems;
     private final int REQUEST_CODE = 20;
     private int editPos;
     private long itemsCnt;
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
 
     public void onAddItem(View v) {
         Intent it = new Intent(MainActivity.this, AddItemActivity.class);
-        int cnt = todoAdapter.getCount();
+        int cnt = todoAdapter.getItemCount();
         itemsCnt = todoAdapter.getItemId(cnt - 1);
         it.putExtra("itemsCnt", itemsCnt + 1);
         startActivityForResult(it, REQUEST_CODE);
@@ -44,7 +44,8 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
         setContentView(R.layout.activity_main);
 
         // Find ListView to populate
-        lvItems = (ListView)findViewById(R.id.lvItems);
+        rvItems = (RecyclerView) findViewById(R.id.rvItems);
+        rvItems.setLayoutManager(new LinearLayoutManager(this));
 
         // Get singleton instance of database
         mItemsDBHelper = ItemsDatabaseHelper.getsInstance(this);
@@ -55,12 +56,13 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
         Cursor todoCursor = db.rawQuery("SELECT * FROM " + "items", null);  // from table
 
         // Setup cursor adapter using cursor
-        todoAdapter = new TodoCursorAdapter(this, todoCursor, 0);
+        todoAdapter = new TodoCursorAdapter(this, todoCursor);
+        setupListViewListener();
 
         // Attach cursor adapter to the ListView
-        lvItems.setAdapter(todoAdapter);
+        rvItems.setAdapter(todoAdapter);
 
-        setupListViewListener();
+
     }
 
     @Override
@@ -94,28 +96,47 @@ public class MainActivity extends AppCompatActivity implements EditItemDialogFra
     }
 
     private void setupListViewListener() {
-        lvItems.setOnItemClickListener(
-                new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        long id = todoAdapter.getItemId(i);
-                        Cursor cursor = (Cursor)lvItems.getItemAtPosition(i);
-                        showEditDialog(new Item((int)id, cursor.getString(3), new Date(cursor.getLong(2))));
-                    }
-                }
-        );
-        lvItems.setOnItemLongClickListener(
-                new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> adapter,
-                                                   View item, int pos, long id) {
-                        long _id = todoAdapter.getItemId(pos);
-                        mItemsDBHelper.deleteItem(_id);
-                        setDataChanged();
-                        return true;
-                    }
-                }
-        );
+        todoAdapter.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+//                long id = rvItems.getChildItemId(view);
+                int position = rvItems.getChildAdapterPosition(view);
+                Cursor cursor = todoAdapter.getCursor(position);
+                showEditDialog(new Item(cursor.getInt(0), cursor.getString(3), new Date(cursor.getLong(2))));
+            }
+        });
+
+        todoAdapter.setOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View view) {
+                int position = rvItems.getChildAdapterPosition(view);
+//                long _id = rvItems.getChildItemId(view);
+                long _id = todoAdapter.getItemId(position);
+                mItemsDBHelper.deleteItem(_id);
+                setDataChanged();
+                return true;
+            }
+        });
+//        rvItems.setOnItemClickListener(
+//                new AdapterView.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                        long id = todoAdapter.getItemId(i);
+//                        Cursor cursor = (Cursor)rvItems.get(i);
+//                        showEditDialog(new Item((int)id, cursor.getString(3), new Date(cursor.getLong(2))));
+//                    }
+//                }
+//        );
+//        rvItems.setOnItemLongClickListener(
+//                new AdapterView.OnItemLongClickListener() {
+//                    @Override
+//                    public boolean onItemLongClick(AdapterView<?> adapter,
+//                                                   View item, int pos, long id) {
+//                        long _id = todoAdapter.getItemId(pos);
+//                        mItemsDBHelper.deleteItem(_id);
+//                        setDataChanged();
+//                        return true;
+//                    }
+//                }
+//        );
     }
 
     @Override

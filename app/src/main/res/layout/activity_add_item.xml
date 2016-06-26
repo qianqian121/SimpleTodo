@@ -35,7 +35,8 @@
         android:layout_below="@+id/datePicker"
         android:layout_alignLeft="@+id/datePicker"
         android:layout_alignStart="@+id/datePicker"
-        android:layout_marginTop="50dp" />
+        android:layout_marginTop="50dp"
+        android:stepSize="1.0" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -69,4 +70,5 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:onClick="onAddNewItem" />
+
 </RelativeLayout>
